@@ -1,0 +1,101 @@
+{% extends 'tasks/base.html' %}
+{% load static %}
+{% load has_group %}
+{% block content %}
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="{% url 'tasks:index' %}">TODO list</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <button type="button" class="bs-modal btn btn-primary" data-form-url="{% url 'tasks:add' %}">Добавить задачу +</button>
+          </li>
+        </ul>
+        <span class="navbar-text" style="margin-right: 30px">
+          {{ user.username }}
+        </span>
+        <a href="{% url 'logout' %}">Выйти из системы</a>
+      </div>
+    </nav>
+    <div class="row text-center d-flex justify-content-center" style="padding-top: 40px">
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Сортировка по дате</h5>
+            <form action="" method="get">
+                <select name="day" id="">
+                    <option value="day">Сегодня</option>
+                    <option value="week">На 7 дней</option>
+                    <option value="all">По дате выполнения</option>
+                </select>
+                <br>
+                <input class="btn btn-primary" type="submit" value="Применить" style="margin-top: 15px">
+            </form>
+          </div>
+        </div>
+      </div>
+     {% if user|has_group:"Руководители" %}
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Сортировка по исполнителям</h5>
+            <form action="" method="get">
+                {{ form.assigned_to }}
+                <br>
+                <input class="btn btn-primary" type="submit" value="Применить" style="margin-top: 15px">
+            </form>
+          </div>
+        </div>
+      </div>
+     {% endif %}
+    </div>
+</div>
+    <hr>
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-3">
+        {% for task in tasks %}
+            <div class="col mb-4 d-flex justify-content-center" style="padding-top: 10px">
+                <div class="card" style="width: 18rem;">
+                  <div class="card-body">
+                    {% if task.due_date < today %}
+                        <h4 class="title card-title" style="color: red">{{ task.title }}</h4>
+                    {% elif task.status == 'выполнено'%}
+                        <h4 class="title card-title" style="color: green">{{ task.title }}</h4>
+                    {% else %}
+                        <h4 class="title card-title">{{ task.title }}</h4>
+                    {% endif %}
+                    <h6 class="card-subtitle mb-2 text-muted">Приоритет: {{ task.priority }}</h6>
+                    <p class="due-date card-text" id="due-date-{{ task.pk }}">{{ task.due_date }}</p>
+                    <p class="card-text">Ответственный: {{ task.assigned_to }}</p>
+                    <p class="card-text">Статус: {{ task.status }}</p>
+                    <button type="button" class="bs-modal btn btn-primary" data-form-url="{% url 'tasks:edit' task.pk %}">Изменить</button>
+                    <button type="button" class="bs-modal btn btn-primary" data-form-url="{% url 'tasks:delete' task.pk %}">Удалить</button>
+                  </div>
+                </div>
+            </div>
+
+        {% endfor %}
+    <script type="text/javascript">
+              $(function () {
+                $(".bs-modal").each(function () {
+                  $(this).modalForm({
+                      formURL: $(this).data('form-url')
+                  });
+                });
+              });
+    </script>
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content"></div>
+      </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
