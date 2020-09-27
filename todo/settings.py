@@ -25,7 +25,7 @@ SECRET_KEY = '_m+j1e_(^4^rp&$o6*4v8iy!gxfjc_zotue*z9crp0s2r+*^i!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['todo-app-tyumen.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['todo-app-etagi.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
