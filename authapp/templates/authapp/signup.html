@@ -1,10 +1,43 @@
 {% extends 'tasks/base.html' %}
 {% load static %}
 {% block content %}
-<h2>Sign up</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Sign up</button>
-</form>
+    <div class="container"><h2>Регистрация</h2>
+        <form method="post">
+          {% csrf_token %}
+            <div class="form-group">
+                <label for="id_last_name">Фамилия</label>
+                {{ form.last_name }}
+                {{ form.last_name.errors}}
+            </div>
+            <div class="form-group">
+                <label>Имя</label>
+                {{ form.first_name }}
+                {{ form.first_name.errors}}
+            </div>
+            <div class="form-group">
+                <label>Отчество</label>
+                {{ form.middle_name }}
+                {{ form.middle_name.errors}}
+            </div>
+            <div class="form-group">
+                <label>Логин</label>
+                {{ form.username }}
+                {{ form.username.errors}}
+            </div>
+            <div class="form-group">
+                {{ form.password1.errors }}
+                <label>Пароль</label>
+                {{ form.password1 }}
+                {{ form.password1.errors}}
+            </div>
+            <div class="form-group">
+                <label>Подтвердите пароль</label>
+                {{ form.password2 }}
+                {{ form.password2.errors}}
+            </div>
+          <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
+            <a href="{% url "tasks:index" %}" class="btn btn-primary">Вернуться</a>
+        </form>
+    </div>
+
 {% endblock content %}

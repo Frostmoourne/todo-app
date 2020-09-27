@@ -36,7 +36,7 @@ def index(request):
         elif request.GET.get('day') == 'week':
             tasks = Task.objects.filter(Q(due_date__lte=week)& Q(due_date__gt=today) & Q(assigned_to=user)).order_by('-updated')
         elif request.GET.get('day') == 'all':
-            tasks = Task.objects.filter(Q(assigned_to=user)).order_by('-due_date')
+            tasks = Task.objects.filter(Q(assigned_to=user)).order_by('due_date')
 
     context = {
         'title': title,

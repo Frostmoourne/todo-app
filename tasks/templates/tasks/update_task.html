@@ -1,5 +1,5 @@
-
 {% extends 'tasks/base.html' %}
+{% load myfilters %}
 {% load static %}
 {% block content %}
 <form method="POST" action="">
@@ -10,7 +10,12 @@
         </button>
       </div>
       <div class="modal-body">
-        {{ form.as_p }}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.errors }}
+                {{ field.label_tag }} {{ field|addclass:'MyClass' }}
+            </div>
+        {% endfor %}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
